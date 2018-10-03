@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -eu
+
+bash "$(dirname "$0")/../src/sync_all.sh" $@
