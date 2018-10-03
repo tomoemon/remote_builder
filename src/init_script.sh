@@ -7,7 +7,7 @@ set -eu
 if [ ! -v __inited ]; then
 
     script_dir_path=$(cd "$(dirname "$0")"; pwd)
-    . "$script_dir_path/default_config.sh"
+    . "$script_dir_path//default_config.sh"
     . "$1"
     . "$script_dir_path/check_env.sh"
 

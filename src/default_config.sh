@@ -2,9 +2,9 @@
 GCLOUD_CONFIG_NAME=""
 
 # Firewall
-FIREWALL_NAME="default-allow-dev-appserver"
-FIREWALL_TAG="dev-app-server"
-FIREWALL_OPEN_PORT="8000-9000"
+FIREWALL_NAME=""
+FIREWALL_TAG=""
+FIREWALL_OPEN_PORT=""
 
 # Instance
 INSTANCE_NAME=""

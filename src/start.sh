@@ -8,18 +8,20 @@ script_dir_path=$(cd "$(dirname "$0")"; pwd)
 . "$script_dir_path/init_script.sh"
 . "$script_dir_path/sync.sh"
 
-#echo "Your active configuration is [${GCLOUD_CONFIG_NAME}]"
-
-if ! ("$GCLOUD_BIN" compute firewall-rules list --format="table(name)" | grep ${FIREWALL_NAME} >/dev/null); then
-    # add firewall
-    "$GCLOUD_BIN" compute --project=${PROJECT_ID} firewall-rules create ${FIREWALL_NAME} \
-    --direction=INGRESS \
-    --priority=1000 \
-    --network=default \
-    --action=ALLOW \
-    --rules=tcp:${FIREWALL_OPEN_PORT} \
-    --source-ranges=0.0.0.0/0 \
-    --target-tags=${FIREWALL_TAG}
+TAG_OPTION=""
+if [ "${FIREWALL_NAME}" != "" ]; then
+    TAG_OPTION="--google-tags=${FIREWALL_TAG}"
+    if ! ("$GCLOUD_BIN" compute firewall-rules list --format="table(name)" | grep ${FIREWALL_NAME} >/dev/null); then
+        # add firewall
+        "$GCLOUD_BIN" compute --project=${PROJECT_ID} firewall-rules create ${FIREWALL_NAME} \
+        --direction=INGRESS \
+        --priority=1000 \
+        --network=default \
+        --action=ALLOW \
+        --rules=tcp:${FIREWALL_OPEN_PORT} \
+        --source-ranges=0.0.0.0/0 \
+        --target-tags=${FIREWALL_TAG}
+    fi
 fi
 
 set +e
@@ -43,7 +45,7 @@ else
     --google-disk-size=${DISK_SIZE} \
     --google-disk-type=pd-standard \
     --google-zone=${ZONE} \
-    --google-tags=${FIREWALL_TAG} \
+    ${TAG_OPTION} \
     ${INSTANCE_NAME}
 
     "$GCLOUD_BIN" compute config-ssh
