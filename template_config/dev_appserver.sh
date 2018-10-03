@@ -38,6 +38,5 @@ IGNORE_CHANGE='*/.*;*/.*/*' # for watchdog (should match full path)
 
 function on_start {
     # サーバ立ち上げ時にローカルで実行するコマンド
-    # dev_appserver を起動する等
-    :
+    do_ssh "dev_appserver.py your_project_dir"
 }
