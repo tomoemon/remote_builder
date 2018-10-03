@@ -10,7 +10,9 @@ FIREWALL_OPEN_PORT=""
 INSTANCE_NAME=""
 MACHINE_TYPE="n1-standard-4" # "n1-highcpu-8" "n1-standard-8" "f1-micro"
 DISK_SIZE="10" # GB
+DISK_TYPE="pd-standard"
 ZONE="us-west1-a"
+PREEMPTIBLE=1
 
 # start.sh プロセス終了時に docker-machine を落とすかどうか
 SHUTDOWN_ON_PROCESS_EXIT=0

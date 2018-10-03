@@ -38,5 +38,8 @@ IGNORE_CHANGE='*/.*;*/.*/*' # for watchdog (should match full path)
 
 function on_start {
     # サーバ立ち上げ時にローカルで実行するコマンド
-    do_ssh "dev_appserver.py your_project_dir"
+    # docker image をインスタンス上で実行する
+    eval $(docker-machine env ${INSTANCE_NAME})
+    docker-compose -f docker-compose.yaml up &
+
 }

@@ -8,9 +8,7 @@ script_dir_path=$(cd "$(dirname "$0")"; pwd)
 . "$script_dir_path/init_script.sh"
 . "$script_dir_path/sync.sh"
 
-TAG_OPTION=""
-if [ "${FIREWALL_NAME}" != "" ]; then
-    TAG_OPTION="--google-tags=${FIREWALL_TAG}"
+if [ "${FIREWALL_NAME}" != "" ] && [ "${FIREWALL_TAG}" != "" ]; then
     if ! ("$GCLOUD_BIN" compute firewall-rules list --format="table(name)" | grep ${FIREWALL_NAME} >/dev/null); then
         # add firewall
         "$GCLOUD_BIN" compute --project=${PROJECT_ID} firewall-rules create ${FIREWALL_NAME} \
@@ -37,13 +35,21 @@ if [ $exists -eq 0 ] ; then
         "$DOCKER_MACHINE_BIN" regenerate-certs --force "${INSTANCE_NAME}"
     fi
 else
+    PREEMPTIBLE_OPTION="--google-preemptible"
+    if [ "${PREEMPTIBLE}" != "1" ]; then
+        PREEMPTIBLE_OPTION=""
+    fi
+    TAG_OPTION=""
+    if [ "${FIREWALL_NAME}" != "" ] && [ "${FIREWALL_TAG}" != "" ]; then
+        TAG_OPTION="--google-tags=${FIREWALL_TAG}"
+    fi
     : create instance
     "$DOCKER_MACHINE_BIN" create --driver=google \
     --google-project=${PROJECT_ID} \
-    --google-preemptible \
+    ${PREEMPTIBLE_OPTION} \
     --google-machine-type=${MACHINE_TYPE} \
     --google-disk-size=${DISK_SIZE} \
-    --google-disk-type=pd-standard \
+    --google-disk-type=${DISK_TYPE} \
     --google-zone=${ZONE} \
     ${TAG_OPTION} \
     ${INSTANCE_NAME}

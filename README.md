@@ -8,7 +8,7 @@
 
 # Features
 
-- Google Cloud Platform の GCE インスタンスの構築
+- Google Cloud Platform の GCE インスタンス上に docker-machine を構築
   - ファイアウォールの自動設定
 - ローカルで変更のあったファイルを自動的に同期
 - インスタンス構築、起動、ファイル転送をトリガーとした任意の処理差し込み
@@ -18,7 +18,7 @@
 - Google Account
 - 下記の権限を持っている GCP Project
   - GCE Instance の参照・作成
-  - Firewall の参照・作成
+  - ファイアウォールの参照・作成
 - commands
   - gcloud (Google Cloud SDK)
   - docker-machine
