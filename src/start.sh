@@ -6,8 +6,9 @@ cwd="$(pwd)"
 script_dir_path=$(cd "$(dirname "$0")"; pwd)
 
 . "$script_dir_path/init_script.sh"
+. "$script_dir_path/sync.sh"
 
-echo "Your active configuration is [${GCLOUD_CONFIG_NAME}]"
+#echo "Your active configuration is [${GCLOUD_CONFIG_NAME}]"
 
 if ! ("$GCLOUD_BIN" compute firewall-rules list --format="table(name)" | grep ${FIREWALL_NAME} >/dev/null); then
     # add firewall
@@ -22,18 +23,16 @@ if ! ("$GCLOUD_BIN" compute firewall-rules list --format="table(name)" | grep ${
 fi
 
 set +e
-status=$(docker-machine status "${INSTANCE_NAME}")
+status=$(${DOCKER_MACHINE_BIN} status "${INSTANCE_NAME}")
 exists=$?
 set -e
 if [ $exists -eq 0 ] ; then
     if [ "$status" = "Stopped" ] ; then
         : start instance
         "$DOCKER_MACHINE_BIN" start "${INSTANCE_NAME}"
-        # IP アドレスが変わっている可能性がある
+        # 再起動すると IP アドレスが変わるため ssh に関する設定を更新する必要がある
         "$GCLOUD_BIN" compute config-ssh
         "$DOCKER_MACHINE_BIN" regenerate-certs --force "${INSTANCE_NAME}"
-    else
-        : instance is already running
     fi
 else
     : create instance
@@ -69,13 +68,13 @@ function on_process_exit {
 trap "on_process_exit" EXIT
 
 # 初回の同期
-. "$script_dir_path/sync_all.sh"
+sync_all
 
 # 起動時処理を行う
 on_start; cd "${cwd}"
 
 # ファイルの同期を開始する
-bash "$script_dir_path/sync_loop.sh" "$1" &
+sync_loop &
 
 # ファイル更新の監視を開始する
 "$WATCHMEDO_BIN" shell-command -R -W \
