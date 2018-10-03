@@ -39,9 +39,32 @@ echo "PATH=$(cd remote_builder/bin; pwd):\$PATH">>~/.bashrc
 
 1. `template_config` 内のテンプレート設定ファイルをコピーして設定ファイルを作成
 
-    cp remote_builder/template_config/dev_appserver.sh config.sh
-    # edit config.sh
+```
+cp remote_builder/template_config/dev_appserver.sh config.sh
+# edit config.sh
+```
     
 2. コマンドを実行
 
-    rstart config.sh
+```
+rstart config.sh
+```
+
+# Lifecycle
+
+1. `rstart` コマンド実行
+2. gcloud アカウントをアクティベート
+3. （ファイアウォールが必要でかつファイアウォールが存在しない場合）
+    1. ファイアウォールを作成
+4. （インスタンスがない場合）
+    1. インスタンスを作成
+    2. `on_create` 実行
+5. インスタンスを起動
+    1. `IP_ADDRESS={インスタンスのIPアドレス}`
+6. `$SYNC_FROM` から `$SYNC_TO` に対してファイルをすべて転送
+7. `on_start` 実行
+8. ファイル同期ループ開始
+    1. （ファイル変更を検知時）
+        1. ファイル転送 
+        2. `/tmp/sync_log.txt` に転送したファイル一覧を出力
+        3. `on_sync` 実行
