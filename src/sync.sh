@@ -16,6 +16,8 @@ function sync_all {
 function sync_loop {
     set -eu
 
+    trap 'kill $(jobs -p)' EXIT
+
     do_ssh "mkdir -p ${SYNC_TO}"
 
     # ファイル更新の監視を開始する
