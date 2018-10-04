@@ -9,6 +9,7 @@ FIREWALL_OPEN_PORT=""
 # Instance
 INSTANCE_NAME=""
 MACHINE_TYPE="n1-standard-4" # "n1-highcpu-8" "n1-standard-8" "f1-micro"
+MACHINE_IMAGE=""
 DISK_SIZE="10" # GB
 DISK_TYPE="pd-standard"
 ZONE="us-west1-a"
