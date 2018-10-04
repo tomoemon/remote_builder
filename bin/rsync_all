@@ -2,4 +2,7 @@
 
 set -eu
 
-bash "$(dirname "$0")/../src/sync_all.sh" $@
+script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+. "${script_dir}/../src/sync.sh"
+
+sync_all

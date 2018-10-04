@@ -2,7 +2,7 @@
 
 set -eu
 
-script_dir_path=$(cd "$(dirname "$0")"; pwd)
+script_dir_path=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 . "$script_dir_path/init_script.sh"
 
 function sync_all {
@@ -17,6 +17,11 @@ function sync_loop {
     set -eu
 
     do_ssh "mkdir -p ${SYNC_TO}"
+
+    # ファイル更新の監視を開始する
+    "$WATCHMEDO_BIN" shell-command -R -W \
+        --command 'date +%s > /tmp/latest_update_time.txt; echo ${watch_src_path} was changed' ${SYNC_FROM} \
+        -i "${IGNORE_CHANGE}" &
 
     while :
     do

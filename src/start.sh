@@ -3,7 +3,7 @@
 set -eu
 
 cwd="$(pwd)"
-script_dir_path=$(cd "$(dirname "$0")"; pwd)
+script_dir_path=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
 . "$script_dir_path/init_script.sh"
 . "$script_dir_path/sync.sh"
@@ -123,10 +123,5 @@ on_start; cd "${cwd}"
 
 # ファイルの同期を開始する
 sync_loop &
-
-# ファイル更新の監視を開始する
-"$WATCHMEDO_BIN" shell-command -R -W \
-  --command 'date +%s > /tmp/latest_update_time.txt; echo ${watch_src_path} was changed' ${SYNC_FROM} \
-  -i "${IGNORE_CHANGE}" &
 
 wait
