@@ -27,11 +27,17 @@ if [ ! -v __inited ]; then
         fi
     fi
 
-    if ! ("$GCLOUD_BIN" auth application-default print-access-token >/dev/null); then
+    PROJECT_ID=$(gcloud config get-value project)
+
+    # see: https://qiita.com/shin1ogawa/items/49a076f62e5f17f18fe5
+    default_credential_account=$(curl -sS "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=$(gcloud auth application-default print-access-token)" | grep '"email"' | cut -d' ' -f3 | sed 's/[",]//g')
+    gcloud_active_account=$(gcloud config list --format="table(core.account)" | tail -n +2)
+
+    if [ "$default_credential_account" != "$gcloud_active_account" ]; then
+        echo ""
+        echo "Your application default credentials doesn't match your active account."
         "$GCLOUD_BIN" auth application-default login
     fi
-
-    PROJECT_ID=$(gcloud config get-value project)
 
     function do_ssh {
         set -eu
