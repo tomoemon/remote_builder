@@ -106,7 +106,7 @@ function assert_running {
     fi
 
     if [ "$status" != "Running" ]; then
-        echo -e "\nInstance [$INSTANCE_NAME] is not running. Run following command.\n\nrboot $CONFIG_FILENAME" >&2
+        echo -e "\nInstance [$INSTANCE_NAME] is not running. Run following command.\n\nrboot -c $CONFIG_FILENAME" >&2
         exit 1
     fi
 }
