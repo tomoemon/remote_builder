@@ -51,7 +51,7 @@ cp remote_builder/template_config/dev_appserver.sh config.sh
 2. コマンドを実行
 
 ```
-rstart config.sh
+rstart -c config.sh
 ```
 
 # Lifecycle

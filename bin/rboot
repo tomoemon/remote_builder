@@ -3,4 +3,6 @@
 set -eu
 
 script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-bash "${script_dir}/../src/shutdown.sh" $@
+. "${script_dir}/../src/machine.sh"
+
+boot

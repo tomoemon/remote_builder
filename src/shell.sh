@@ -6,8 +6,10 @@ script_dir_path=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
 . "$script_dir_path/init_script.sh"
 
-eval $("$DOCKER_MACHINE_BIN" env "${INSTANCE_NAME}")
+function shell {
 
-shift
+    eval $("$DOCKER_MACHINE_BIN" env "${INSTANCE_NAME}")
 
-eval $@
+    eval $@
+
+}

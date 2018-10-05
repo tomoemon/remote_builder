@@ -3,7 +3,10 @@
 set -eu
 
 script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+. "${script_dir}/../src/machine.sh"
 . "${script_dir}/../src/sync.sh"
+
+assert_running
 
 sync_all
 

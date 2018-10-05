@@ -2,13 +2,12 @@
 
 set -eu
 
-: $1
-
 if [ ! -v __inited ]; then
 
     script_dir_path=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-    . "$script_dir_path//default_config.sh"
-    . "$1"
+    . "$script_dir_path/options.sh"
+    . "$script_dir_path/default_config.sh"
+    . "$CONFIG_FILENAME"
     . "$script_dir_path/check_env.sh"
 
     REMOTE_HOST=$(grep $INSTANCE_NAME ~/.ssh/config | cut -d' ' -f2)
