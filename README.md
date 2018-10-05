@@ -6,6 +6,10 @@
 
 （プリエンプティブインスタンスの特徴ですが、）インスタンスの起動後に最大で24時間経過すると自動的に停止するため、作業終了後にうっかり停止を忘れても課金額が大きな額になることはありません。
 
+# Overview
+
+![overview](docs/remote_builder.png)
+
 # Features
 
 - Google Cloud Platform の GCE インスタンス上に docker-machine を構築
