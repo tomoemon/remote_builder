@@ -85,7 +85,7 @@ function boot {
         on_create
     fi
 
-    IP_ADDRESS=$(docker-machine ls -f "{{.Name}}\t{{.URL}}" | cut -f2 | sed -E 's/tcp:\/\///' | sed -E 's/:[0-9]\+//' | tr -d "\n\r")
+    IP_ADDRESS=$(docker-machine ls -f "{{.Name}}\t{{.URL}}" | cut -f2 | sed -E 's/tcp:\/\///' | sed -E 's/:[0-9]+//' | tr -d "\n\r")
 
 }
 
