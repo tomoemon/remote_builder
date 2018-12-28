@@ -35,7 +35,7 @@ if [ ! -v __inited ]; then
     if [ "$default_credential_account" != "$gcloud_active_account" ]; then
         echo ""
         echo "Your application default credentials doesn't match your active account."
-        "$GCLOUD_BIN" auth application-default login
+        "$GCLOUD_BIN" auth application-default login --no-launch-browser
     fi
 
     function do_ssh {
