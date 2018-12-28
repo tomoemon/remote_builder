@@ -12,17 +12,19 @@ if [ ! -v __inited ]; then
 
     REMOTE_HOST=$(grep $INSTANCE_NAME ~/.ssh/config | cut -d' ' -f2)
 
-    if ! ( "$GCLOUD_BIN" config configurations list --filter="NAME=${GCLOUD_CONFIG_NAME}" --format="table(is_active)" | grep True >/dev/null); then
-        if ! ("$GCLOUD_BIN" config configurations activate "${GCLOUD_CONFIG_NAME}"); then
-            echo ""
-            echo "Configure GCP account before you start. See below steps."
-            echo "  $GCLOUD_BIN config configurations create {CONFIG_NAME}"
-            echo "  $GCLOUD_BIN config configurations activate {CONFIG_NAME}"
-            echo "  $GCLOUD_BIN config set account {YOUR_ACCOUT}"
-            echo "  $GCLOUD_BIN config set project {YOUR_PROJECT_ID}"
-            echo ""
-            echo "and then write your {CONFIG_NAME} to config.sh (eg. GCLOUD_CONFIG_NAME=myconfig)"
-            exit 1
+    if [ ! -z "${GCLOUD_CONFIG_NAME}" ]; then
+        if ! ( "$GCLOUD_BIN" config configurations list --filter="NAME=${GCLOUD_CONFIG_NAME}" --format="table(is_active)" | grep True >/dev/null); then
+            if ! ("$GCLOUD_BIN" config configurations activate "${GCLOUD_CONFIG_NAME}"); then
+                echo ""
+                echo "Configure GCP account before you start. See below steps."
+                echo "  $GCLOUD_BIN config configurations create {CONFIG_NAME}"
+                echo "  $GCLOUD_BIN config configurations activate {CONFIG_NAME}"
+                echo "  $GCLOUD_BIN config set account {YOUR_ACCOUT}"
+                echo "  $GCLOUD_BIN config set project {YOUR_PROJECT_ID}"
+                echo ""
+                echo "and then write your {CONFIG_NAME} to config.sh (eg. GCLOUD_CONFIG_NAME=myconfig)"
+                exit 1
+            fi
         fi
     fi
 
