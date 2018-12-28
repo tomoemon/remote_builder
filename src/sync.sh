@@ -34,12 +34,12 @@ function sync_loop {
         update_time=$(cat /tmp/latest_update_time.txt)
         last_rsync_time=$(cat /tmp/last_rsync_start_time.txt)
 
-        updated=$(echo "$update_time" "$last_rsync_time" | awk -e '{ printf("%d",$1>$2) }')
+        updated=$(echo "$update_time" "$last_rsync_time" | awk '{ printf("%d",$1>$2) }')
         # 前回の rsync 開始時以降にファイル更新が発生したら
         if [ "$updated" -eq 1 ]; then
             # 前回の rsync 開始時から interval 秒経過したら
             current_time=$(date "${DATE_FORMAT}")
-            interval=$(echo "$current_time" "$last_rsync_time" "$SYNC_INTERVAL" | awk -e '{ printf("%d",($1-$2)>=$3) }')
+            interval=$(echo "$current_time" "$last_rsync_time" "$SYNC_INTERVAL" | awk '{ printf("%d",($1-$2)>=$3) }')
             if [ "$interval" -eq 1 ]; then
                 echo $current_time > /tmp/last_rsync_start_time.txt
                 eval "$RSYNC_BIN" -aui $SYNC_OPTION "${SYNC_FROM}" ${LOGIN_USERNAME}@${REMOTE_HOST}:${SYNC_TO} | cut -d" " -f2 | tee "${SYNC_LOG}"
