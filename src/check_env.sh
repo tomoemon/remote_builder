@@ -22,8 +22,8 @@ command_exists docker-machine "$DOCKER_MACHINE_BIN" https://docs.docker.com/mach
 command_exists watchmedo "$WATCHMEDO_BIN" https://github.com/gorakhargosh/watchdog#installation
 command_exists rsync "$RSYNC_BIN" ""
 
-if ! (bash --version | grep "version 5" >/dev/null); then
-    echo "check bash(version 5)...\e[31mnot found\e[m"
+if ! (bash --version | grep -e "version 4" -e "version 5" >/dev/null); then
+    echo "check bash(version 4 or 5)...\e[31mnot found\e[m"
     result=1
 fi
 
