@@ -8,7 +8,7 @@ script_dir_path=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
 function shell {
 
-    eval $("$DOCKER_MACHINE_BIN" env "${INSTANCE_NAME}")
+    eval $("$DOCKER_MACHINE_BIN" env --shell bash "${INSTANCE_NAME}")
 
     eval $@
 
