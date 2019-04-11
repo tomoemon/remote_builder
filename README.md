@@ -29,6 +29,7 @@ remote_builder は作業用のリモートマシンを簡単に構築するこ�
   - gcloud (Google Cloud SDK)
   - docker-machine
   - watchmedo
+      - `pip install watchdog`
   - bash ( >= 4.0)
   - rsync ( >= 3.0)
 
