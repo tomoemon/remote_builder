@@ -12,7 +12,7 @@ function sync_all {
 
     do_ssh "mkdir -p ${SYNC_TO}"
     date "${DATE_FORMAT}" > /tmp/last_rsync_start_time.txt
-    eval "$RSYNC_BIN" -aui $SYNC_OPTION "${SYNC_FROM}" ${LOGIN_USERNAME}@${REMOTE_HOST}:${SYNC_TO} | cut -d' ' -f2
+    eval "$RSYNC_BIN" -aui $SYNC_OPTION "${SYNC_FROM}" ${LOGIN_USERNAME}@${REMOTE_HOST}:${SYNC_TO}
 }
 
 function sync_loop {
@@ -42,7 +42,7 @@ function sync_loop {
             interval=$(echo "$current_time" "$last_rsync_time" "$SYNC_INTERVAL" | awk '{ printf("%d",($1-$2)>=$3) }')
             if [ "$interval" -eq 1 ]; then
                 echo $current_time > /tmp/last_rsync_start_time.txt
-                eval "$RSYNC_BIN" -aui $SYNC_OPTION "${SYNC_FROM}" ${LOGIN_USERNAME}@${REMOTE_HOST}:${SYNC_TO} | cut -d" " -f2 | tee "${SYNC_LOG}"
+                eval "$RSYNC_BIN" -aui $SYNC_OPTION "${SYNC_FROM}" ${LOGIN_USERNAME}@${REMOTE_HOST}:${SYNC_TO} | tee "${SYNC_LOG}"
                 on_sync
             fi
         fi
